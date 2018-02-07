@@ -1,0 +1,12 @@
+services:
+    Erichard\GlideBundle\GlideUrlBuilder:
+        public: false
+        arguments:
+            $signkey: "%erichard_glide.sign_key%"
+
+    Erichard\GlideBundle\Twig\GlideExtension:
+        public: false
+        arguments:
+            - "@Erichard\\GlideBundle\\GlideUrlBuilder"
+        tags:
+            - { name: twig.extension }

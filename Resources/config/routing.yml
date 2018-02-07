@@ -1,0 +1,7 @@
+erichard_glide_resize:
+    path:     /{server}/{path}.{_format}
+    defaults: { _controller: ErichardGlideBundle:Glide:resize }
+    methods: [GET]
+    requirements:
+        path: ".+"
+        _format: ((?i)jpe?g|png|gif)
