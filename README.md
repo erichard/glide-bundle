@@ -55,7 +55,7 @@ You can configure as many servers you want. Each server must have its proper `so
 Presets
 -------
 
-I prefer to use presets in my projects to avoid having image settings scattered across templates. Check to Glide documentation to [learn more about presets](http://glide.thephpleague.com/1.0/config/defaults-and-presets/).
+I prefer to use presets in my projects to avoid having image settings scattered across templates. Check the Glide documentation to [learn more about presets](http://glide.thephpleague.com/1.0/config/defaults-and-presets/).
 
 Security
 --------
