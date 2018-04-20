@@ -2,8 +2,8 @@
 
 namespace Erichard\GlideBundle\Controller;
 
+use Erichard\GlideBundle\SymfonyResponseFactory;
 use League\Glide\Filesystem\FileNotFoundException;
-use League\Glide\Responses\SymfonyResponseFactory;
 use League\Glide\ServerFactory;
 use League\Glide\Signatures\SignatureException;
 use League\Glide\Signatures\SignatureFactory;
