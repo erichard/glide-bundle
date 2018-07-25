@@ -2,9 +2,7 @@
 
 namespace Erichard\GlideBundle\Controller;
 
-use Erichard\GlideBundle\SymfonyResponseFactory;
 use League\Glide\Filesystem\FileNotFoundException;
-use League\Glide\ServerFactory;
 use League\Glide\Signatures\SignatureException;
 use League\Glide\Signatures\SignatureFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -23,9 +21,9 @@ class GlideController extends Controller
      */
     public function resizeAction(Request $request, $server, $path, $_format)
     {
-        $servers = $this->getParameter('erichard_glide.servers');
+        $serverId = "erichard_glide.${server}_server";
 
-        if (!isset($servers[$server])) {
+        if (!$this->has($serverId)) {
             throw $this->createAccessDeniedException('Unkown glide server');
         }
 
@@ -41,15 +39,7 @@ class GlideController extends Controller
             }
         }
 
-        $serverConfig = $servers[$server];
-
-        $server = ServerFactory::create([
-            'source' => $this->get($serverConfig['source']),
-            'cache' => $this->get($serverConfig['cache']),
-            'response' => new SymfonyResponseFactory($request),
-            'presets' => $this->getParameter('erichard_glide.presets'),
-            'max_image_size' => isset($serverConfig['max_image_size']) ? $serverConfig['max_image_size'] : null,
-        ]);
+        $server = $this->get($serverId);
 
         try {
             return $server->getImageResponse("{$path}.{$_format}", $request->query->all());

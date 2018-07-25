@@ -10,3 +10,15 @@ services:
             - "@Erichard\\GlideBundle\\GlideUrlBuilder"
         tags:
             - { name: twig.extension }
+
+    erichard_glide.symfony_response_factory:
+        class: Erichard\GlideBundle\SymfonyResponseFactory
+        public: false
+
+    erichard_glide.server:
+        class: League\Glide\Server
+        public: false
+        abstract: true
+        factory: [ League\Glide\ServerFactory, 'create' ]
+        arguments:
+            - ~
