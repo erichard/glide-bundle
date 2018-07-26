@@ -44,7 +44,7 @@ erichard_glide:
             max_image_size: 4000000 # OPTIONAL - number of pixels
             defaults: # OPTIONAL - glide defaults options
                 q: 90
-                fmt: pjg
+                fm: jpg
 
 ```
 
