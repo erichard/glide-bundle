@@ -28,15 +28,13 @@ class ErichardGlideExtension extends Extension
         $loader->load('services.yml');
 
         $container->setParameter('erichard_glide.sign_key', $config['sign_key']);
-        // $container->setParameter('erichard_glide.presets', $config['presets']);
-        $container->setParameter('erichard_glide.servers', $config['servers']);
 
         foreach ($config['servers'] as $name => $server) {
-            $this->createServer($name, $server['source'], $server['cache'], $container, $config['presets'], $server['max_image_size']);
+            $this->createServer($name, $server['source'], $server['cache'], $container, $server['defaults'], $config['presets'], $server['max_image_size']);
         }
     }
 
-    public function createServer($name, $source, $cache, ContainerBuilder $container, array $presets = [], $maxImageSize = null)
+    public function createServer($name, $source, $cache, ContainerBuilder $container, array $defaults = [], array $presets = [], $maxImageSize = null)
     {
         $id = sprintf('erichard_glide.%s_server', $name);
 
@@ -46,6 +44,7 @@ class ErichardGlideExtension extends Extension
                 'source' => new Reference($source),
                 'cache' => new Reference($cache),
                 'response' => new Reference('erichard_glide.symfony_response_factory'),
+                'defaults' => $defaults,
                 'presets' => $presets,
                 'max_image_size' => $maxImageSize,
            ])

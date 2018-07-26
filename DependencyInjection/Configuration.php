@@ -63,6 +63,7 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('source')->isRequired()->end()
                             ->scalarNode('cache')->isRequired()->end()
                             ->integerNode('max_image_size')->defaultNull()->end()
+                            ->variableNode('defaults')->defaultValue([])->end()
                         ->end()
                     ->end()
                 ->end()

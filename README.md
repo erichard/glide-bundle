@@ -34,7 +34,7 @@ Configuration
 erichard_glide:
     sign_key: ~
     presets:
-        product_showcase:
+        product_showcase: # glide options
             w: 540
             h: 540
     servers:
@@ -42,6 +42,9 @@ erichard_glide:
             source: oneup_flysystem.image_filesystem # A flystem service
             cache: oneup_flysystem.cache_filesystem # A flystem service
             max_image_size: 4000000 # OPTIONAL - number of pixels
+            defaults: # OPTIONAL - glide defaults options
+                q: 90
+                fmt: pjg
 
 ```
 
@@ -73,4 +76,15 @@ A twig extension is provided to generate images URL in your templates. The exten
 
 ```
 {{ glideUrl('image', image.path, {'p': 'product_showcase'}) }}
+```
+
+Get glide servers from container
+--------------------------------
+
+Servers are accessible publicly in the container. You can grab them  with their id `erichard_glide.<name>_server`.
+
+With the exemple from above you can get the server like this.
+
+```
+$server = $this->get('erichard_glide.image_server');
 ```
