@@ -39,10 +39,26 @@ class GlideController extends Controller
             }
         }
 
-        $server = $this->get($serverId);
+        $glideServer = $this->get($serverId);
+
+        $baseOptions = $glideServer->getAllParams($request->query->all());
+        $processor = $this->get('erichard_glide.options_resolver');
+        $options = $processor->resolveOptions($baseOptions, $server);
 
         try {
-            return $server->getImageResponse("{$path}.{$_format}", $request->query->all());
+            $response = $glideServer->getImageResponse("{$path}.{$_format}", $options);
+
+            if (isset($options['dpr'])) {
+                $response->headers->set('Content-DPR', $options['dpr']);
+                $response->setVary('DPR', false);
+            }
+
+            if (isset($options['fm']) && 'webp' === $options['fm']) {
+                $response->headers->set('Content-Type', 'image/webp');
+                $response->setVary('Content-Type', false);
+            }
+
+            return $response;
         } catch (FileNotFoundException $exception) {
             throw $this->createNotFoundException();
         }

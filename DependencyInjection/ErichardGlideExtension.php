@@ -28,9 +28,18 @@ class ErichardGlideExtension extends Extension
         $loader->load('services.yml');
 
         $container->setParameter('erichard_glide.sign_key', $config['sign_key']);
+        $container->setParameter('erichard_glide.client_hints.dpr', $config['client_hints']['dpr']);
 
         foreach ($config['servers'] as $name => $server) {
             $this->createServer($name, $server['source'], $server['cache'], $container, $server['defaults'], $config['presets'], $server['max_image_size']);
+        }
+
+        if (!$config['client_hints']['enabled']) {
+            $container->removeDefinition('erichard_glide.client_hints_resolver');
+        }
+
+        if (!$config['accept_webp']['enabled']) {
+            $container->removeDefinition('erichard_glide.accept_webp_resolver');
         }
     }
 

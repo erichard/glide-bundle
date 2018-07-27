@@ -22,3 +22,24 @@ services:
         factory: [ League\Glide\ServerFactory, 'create' ]
         arguments:
             - ~
+
+    erichard_glide.options_resolver:
+        public: true
+        class: Erichard\GlideBundle\CompositeOptionResolver
+
+    erichard_glide.client_hints_resolver:
+        public: false
+        class: Erichard\GlideBundle\OptionResolver\ClientHintsResolver
+        arguments:
+            - "@request_stack"
+            - "%erichard_glide.client_hints.dpr%"
+        tags:
+            - { name: erichard_glide.options_resolver }
+
+    erichard_glide.accept_webp_resolver:
+        public: false
+        class: Erichard\GlideBundle\OptionResolver\AcceptWebpResolver
+        arguments:
+            - "@request_stack"
+        tags:
+            - { name: erichard_glide.options_resolver }
