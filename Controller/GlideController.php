@@ -55,7 +55,7 @@ class GlideController extends Controller
 
             if (isset($options['fm']) && 'webp' === $options['fm']) {
                 $response->headers->set('Content-Type', 'image/webp');
-                $response->setVary('Content-Type', false);
+                $response->setVary('Accept', false);
             }
 
             return $response;
