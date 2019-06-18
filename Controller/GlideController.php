@@ -24,7 +24,7 @@ class GlideController extends Controller
         $serverId = "erichard_glide.${server}_server";
 
         if (!$this->has($serverId)) {
-            throw $this->createAccessDeniedException('Unkown glide server');
+            throw $this->createNotFoundException();
         }
 
         $signatureKey = $this->getParameter('erichard_glide.sign_key');
