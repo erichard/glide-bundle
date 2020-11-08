@@ -5,11 +5,11 @@ namespace Erichard\GlideBundle\Controller;
 use League\Glide\Filesystem\FileNotFoundException;
 use League\Glide\Signatures\SignatureException;
 use League\Glide\Signatures\SignatureFactory;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class GlideController extends AbstractController
+class GlideController extends Controller
 {
     /**
      * @param Request $request
