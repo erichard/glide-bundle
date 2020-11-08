@@ -1,7 +1,11 @@
 services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
     Erichard\GlideBundle\Controller\GlideController:
         public: true
-        calls: [['setContainer', ['@Psr\Container\ContainerInterface']]]
         tags: ['controller.service_arguments']
         
     Erichard\GlideBundle\GlideUrlBuilder:
