@@ -1,6 +1,8 @@
 services:
     Erichard\GlideBundle\Controller\GlideController:
-        tags: ['controller.service_arguments']
+        calls:
+            - method: setContainer
+              arguments: ['@service_container']
         
     Erichard\GlideBundle\GlideUrlBuilder:
         public: false
