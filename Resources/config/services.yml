@@ -1,6 +1,7 @@
 services:
     Erichard\GlideBundle\Controller\GlideController:
         public: true
+        calls: [['setContainer', ['@Psr\Container\ContainerInterface']]]
         tags: ['controller.service_arguments']
         
     Erichard\GlideBundle\GlideUrlBuilder:
