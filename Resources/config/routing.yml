@@ -1,6 +1,6 @@
 erichard_glide_resize:
     path:     /{server}/{path}.{_format}
-    defaults: { _controller: ErichardGlideBundle:Glide:resize }
+    defaults: { _controller: Erichard\GlideBundle\Controller\GlideController::resizeAction }
     methods: [GET]
     requirements:
         path: ".+"
