@@ -1,6 +1,5 @@
 services:
-    Erichard\GlideBundle\Controller\:
-        resource: '../../Controller'
+    Erichard\GlideBundle\Controller\GlideController:
         tags: ['controller.service_arguments']
         
     Erichard\GlideBundle\GlideUrlBuilder:
