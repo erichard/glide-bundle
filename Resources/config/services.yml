@@ -1,6 +1,6 @@
 services:
     Erichard\GlideBundle\Controller\GlideController:
-        tags: [controller.service_arguments]
+        tags: ['controller.service_arguments']
         
     Erichard\GlideBundle\GlideUrlBuilder:
         public: false
