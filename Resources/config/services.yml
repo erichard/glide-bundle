@@ -1,4 +1,8 @@
 services:
+    Erichard\GlideBundle\Controller\:
+        resource: '../../Controller'
+        tags: ['controller.service_arguments']
+        
     Erichard\GlideBundle\GlideUrlBuilder:
         public: false
         arguments:
