@@ -3,8 +3,7 @@ services:
         autowire: false
         autoconfigure: false
     
-    Erichard\GlideBundle\Controller\:
-        resource: '../../Controller'
+    Erichard\GlideBundle\Controller\GlideController:
         public: true
         tags: ['container.service_subscriber']
         calls: [['setContainer', ['@Psr\Container\ContainerInterface']]]
