@@ -12,11 +12,6 @@ use Psr\Container\ContainerInterface;
 
 class GlideController extends AbstractController
 {
-    public function __construct(ContainerInterface $container)
-    {
-        $this->container = $container;
-    }
-    
     /**
      * @param Request $request
      * @param string  $server
