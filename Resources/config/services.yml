@@ -2,8 +2,7 @@ services:
     Erichard\GlideBundle\Controller\GlideController:
         public: true
         calls: [['setContainer', ['@Psr\Container\ContainerInterface']]]
-        tags: 
-            - { name: 'container.service_subscriber', id: 'erichard_glide.image_server' }
+        tags: ['container.service_subscriber']
         
     Erichard\GlideBundle\GlideUrlBuilder:
         public: false
