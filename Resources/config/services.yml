@@ -22,7 +22,7 @@ services:
 
     erichard_glide.server:
         class: League\Glide\Server
-        public: false
+        public: true
         abstract: true
         factory: [ League\Glide\ServerFactory, 'create' ]
         arguments:
