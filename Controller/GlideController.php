@@ -8,6 +8,7 @@ use League\Glide\Signatures\SignatureFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Psr\Container\ContainerInterface;
 
 class GlideController extends AbstractController
 {
