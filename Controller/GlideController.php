@@ -11,6 +11,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class GlideController extends AbstractController
 {
+    protected $container;
+
+    public function __construct(ContainerInterface $container)
+    {
+        $this->container = $container;
+    }
+    
     /**
      * @param Request $request
      * @param string  $server
