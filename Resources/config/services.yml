@@ -1,12 +1,8 @@
 services:
-    _defaults:
-        autowire: false
-        autoconfigure: false
-    
     Erichard\GlideBundle\Controller\GlideController:
         public: true
+        calls: [['setContainer', ['@Psr\Container\ContainerInterface']]]
         tags: ['container.service_subscriber']
-        #calls: [['setContainer', ['@Psr\Container\ContainerInterface']]]
         
     Erichard\GlideBundle\GlideUrlBuilder:
         public: false
