@@ -41,7 +41,7 @@ class ErichardGlideExtension extends Extension
         
         $definition = class_exists('\Symfony\Component\DependencyInjection\ChildDefinition')
             ? new ChildDefinition('erichard_glide.server')
-            : new DefinitionDecorator('erichard_glide.server);
+            : new DefinitionDecorator('erichard_glide.server');
 
         $container
             ->setDefinition($id, $definition)
