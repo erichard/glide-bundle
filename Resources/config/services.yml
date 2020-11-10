@@ -6,7 +6,7 @@ services:
     Erichard\GlideBundle\Controller\GlideController:
         public: true
         tags: ['container.service_subscriber']
-        calls: [['setContainer', ['@Psr\Container\ContainerInterface']]]
+        #calls: [['setContainer', ['@Psr\Container\ContainerInterface']]]
         
     Erichard\GlideBundle\GlideUrlBuilder:
         public: false
