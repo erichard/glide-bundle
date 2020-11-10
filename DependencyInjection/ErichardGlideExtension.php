@@ -5,6 +5,7 @@ namespace Erichard\GlideBundle\DependencyInjection;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -37,9 +38,13 @@ class ErichardGlideExtension extends Extension
     public function createServer($name, $source, $cache, ContainerBuilder $container, array $defaults = [], array $presets = [], $maxImageSize = null)
     {
         $id = sprintf('erichard_glide.%s_server', $name);
+        
+        $definition = class_exists('\Symfony\Component\DependencyInjection\ChildDefinition')
+            ? new ChildDefinition('erichard_glide.server')
+            : new DefinitionDecorator('erichard_glide.server);
 
         $container
-            ->setDefinition($id, new ChildDefinition('erichard_glide.server'))
+            ->setDefinition($id, $definition)
             ->replaceArgument(0, [
                 'source' => new Reference($source),
                 'cache' => new Reference($cache),
