@@ -22,7 +22,7 @@ class GlideController extends AbstractController
     public function resizeAction(Request $request, $server, $path, $_format)
     {
         $serverId = "erichard_glide.${server}_server";
-echo $serverId;
+
         if (!$this->has($serverId)) {
             throw $this->createNotFoundException();
         }
