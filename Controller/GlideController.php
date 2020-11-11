@@ -36,7 +36,9 @@ class GlideController extends AbstractController
             }
         }
 
-        $server = $this->get($serverId);
+        $serverConfiguration = $this->getParameter($serverId);
+        
+        $server = League\Glide\ServerFactory::create($serverConfiguration);
 
         try {
             return $server->getImageResponse("{$path}.{$_format}", $request->query->all());
@@ -44,12 +46,4 @@ class GlideController extends AbstractController
             throw $this->createNotFoundException();
         }
     }
-    
-    public static function getSubscribedServices()
-    {
-        return array_merge(parent::getSubscribedServices(), [
-            'erichard_glide.image_server' => '?'.League\Glide\Server::class,
-        ]);
-    }
-    
 }
