@@ -24,10 +24,6 @@ class GlideController extends AbstractController
     {
         $serverId = "erichard_glide.${server}_server";
 
-        if (!$this->has($serverId)) {
-            throw $this->createNotFoundException();
-        }
-
         $signatureKey = $this->getParameter('erichard_glide.sign_key');
 
         if (null !== $signatureKey) {
