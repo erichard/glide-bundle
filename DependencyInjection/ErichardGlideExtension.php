@@ -38,22 +38,14 @@ class ErichardGlideExtension extends Extension
     public function createServer($name, $source, $cache, ContainerBuilder $container, array $defaults = [], array $presets = [], $maxImageSize = null)
     {
         $id = sprintf('erichard_glide.%s_server', $name);
-        
-        $definition = class_exists('\Symfony\Component\DependencyInjection\ChildDefinition')
-            ? new ChildDefinition('erichard_glide.server')
-            : new DefinitionDecorator('erichard_glide.server');
 
-        $container
-            ->setDefinition($id, $definition)
-            ->replaceArgument(0, [
-                'source' => new Reference($source),
-                'cache' => new Reference($cache),
-                'response' => new Reference('erichard_glide.symfony_response_factory'),
-                'defaults' => $defaults,
-                'presets' => $presets,
-                'max_image_size' => $maxImageSize,
-           ])
-            ->setPublic(true)
-        ;
+        $container->setParameter($id, [
+            'source' => new Reference($source),
+            'cache' => new Reference($cache),
+            'response' => new Reference('erichard_glide.symfony_response_factory'),
+            'defaults' => $defaults,
+            'presets' => $presets,
+            'max_image_size' => $maxImageSize,
+        ]);
     }
 }
