@@ -19,11 +19,3 @@ services:
     erichard_glide.symfony_response_factory:
         class: Erichard\GlideBundle\SymfonyResponseFactory
         public: false
-
-    erichard_glide.server:
-        class: League\Glide\Server
-        public: true
-        abstract: true
-        factory: [ League\Glide\ServerFactory, 'create' ]
-        arguments:
-            - ~
