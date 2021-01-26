@@ -1,21 +1,29 @@
 services:
     Erichard\GlideBundle\Controller\GlideController:
         public: true
+        arguments:
+            - '@Erichard\GlideBundle\ServerRepository'
         calls: [['setContainer', ['@Psr\Container\ContainerInterface']]]
         tags: ['container.service_subscriber']
         
     Erichard\GlideBundle\GlideUrlBuilder:
-        public: false
         arguments:
             $signkey: "%erichard_glide.sign_key%"
 
     Erichard\GlideBundle\Twig\GlideExtension:
-        public: false
         arguments:
-            - "@Erichard\\GlideBundle\\GlideUrlBuilder"
+            - '@Erichard\GlideBundle\GlideUrlBuilder'
         tags:
             - { name: twig.extension }
 
-    erichard_glide.symfony_response_factory:
-        class: Erichard\GlideBundle\SymfonyResponseFactory
+    Erichard\GlideBundle\SymfonyResponseFactory: ~
+    
+    League\Glide\Server:
+        class: League\Glide\Server
         public: false
+        abstract: true
+        factory: [ League\Glide\ServerFactory, 'create' ]
+        arguments:
+            - ~
+
+    Erichard\GlideBundle\ServerRepository: ~

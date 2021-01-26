@@ -2,13 +2,15 @@
 
 namespace Erichard\GlideBundle\DependencyInjection;
 
+use Erichard\GlideBundle\ServerRepository;
+use Erichard\GlideBundle\SymfonyResponseFactory;
+use League\Glide\Server;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\DefinitionDecorator;
+use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\DependencyInjection\Extension\Extension;
 
 /**
  * This is the class that loads and manages your bundle configuration.
@@ -39,13 +41,21 @@ class ErichardGlideExtension extends Extension
     {
         $id = sprintf('erichard_glide.%s_server', $name);
 
-        $container->setParameter($id, [
-            'source' => new Reference($source),
-            'cache' => new Reference($cache),
-            'response' => new Reference('erichard_glide.symfony_response_factory'),
-            'defaults' => $defaults,
-            'presets' => $presets,
-            'max_image_size' => $maxImageSize,
-        ]);
+        $container
+            ->setDefinition($id, new ChildDefinition(Server::class))
+            ->replaceArgument(0, [
+                'source' => new Reference($source),
+                'cache' => new Reference($cache),
+                'response' => new Reference(SymfonyResponseFactory::class),
+                'defaults' => $defaults,
+                'presets' => $presets,
+                'max_image_size' => $maxImageSize,
+           ])
+        ;
+
+        $container
+            ->getDefinition(ServerRepository::class)
+            ->addMethodCall('addServer', [$id, new Reference($id)])
+        ;
     }
 }
