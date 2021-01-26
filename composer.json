@@ -7,7 +7,6 @@
     },
     "require": {
         "league/glide": "^1.0",
-        "league/glide-symfony": "^1.0",
         "league/flysystem": "^1.0"
     },
     "suggest": {
