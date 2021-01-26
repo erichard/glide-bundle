@@ -5,11 +5,12 @@ namespace Erichard\GlideBundle\Controller;
 use League\Glide\Filesystem\FileNotFoundException;
 use League\Glide\Signatures\SignatureException;
 use League\Glide\Signatures\SignatureFactory;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Psr\Container\ContainerInterface;
 
-class GlideController extends Controller
+class GlideController extends AbstractController
 {
     /**
      * @param Request $request
@@ -23,10 +24,6 @@ class GlideController extends Controller
     {
         $serverId = "erichard_glide.${server}_server";
 
-        if (!$this->has($serverId)) {
-            throw $this->createNotFoundException();
-        }
-
         $signatureKey = $this->getParameter('erichard_glide.sign_key');
 
         if (null !== $signatureKey) {
@@ -39,7 +36,9 @@ class GlideController extends Controller
             }
         }
 
-        $server = $this->get($serverId);
+        $serverConfiguration = $this->getParameter($serverId);
+        
+        $server = League\Glide\ServerFactory::create($serverConfiguration);
 
         try {
             return $server->getImageResponse("{$path}.{$_format}", $request->query->all());

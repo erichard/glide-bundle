@@ -5,9 +5,10 @@ namespace Erichard\GlideBundle\DependencyInjection;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\DependencyInjection\Extension\Extension;
 
 /**
  * This is the class that loads and manages your bundle configuration.
@@ -38,17 +39,13 @@ class ErichardGlideExtension extends Extension
     {
         $id = sprintf('erichard_glide.%s_server', $name);
 
-        $container
-            ->setDefinition($id, new ChildDefinition('erichard_glide.server'))
-            ->replaceArgument(0, [
-                'source' => new Reference($source),
-                'cache' => new Reference($cache),
-                'response' => new Reference('erichard_glide.symfony_response_factory'),
-                'defaults' => $defaults,
-                'presets' => $presets,
-                'max_image_size' => $maxImageSize,
-           ])
-            ->setPublic(true)
-        ;
+        $container->setParameter($id, [
+            'source' => new Reference($source),
+            'cache' => new Reference($cache),
+            'response' => new Reference('erichard_glide.symfony_response_factory'),
+            'defaults' => $defaults,
+            'presets' => $presets,
+            'max_image_size' => $maxImageSize,
+        ]);
     }
 }
