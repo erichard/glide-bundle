@@ -1,6 +1,6 @@
 <?php
 
-namespace Erichard\GlideBundle;
+namespace Erichard\Bundle\GlideBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
