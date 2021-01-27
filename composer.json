@@ -9,7 +9,7 @@
         }
     ],
     "autoload": {
-        "psr-4": { "Erichard\\GlideBundle\\": "" }
+        "psr-4": { "Erichard\\Bundle\\GlideBundle\\": "" }
     },
     "require": {
         "league/glide": "^1.0"
