@@ -45,6 +45,7 @@ class GlideController
         }
 
         $options = $this->getOptionsForServer($server, $request);
+
         $glideServer = $this->serverInventory->get($server);
 
         try {
@@ -64,11 +65,13 @@ class GlideController
     {
         $glideServer = $this->serverInventory->get($server);
 
-        $baseOptions = $glideServer->getAllParams($request->query->all());
+        $baseOptions = $glideServer->getAllParams();
 
         $options = $this
             ->optionResolver
             ->resolveOptions($baseOptions, $server);
+
+        array_merge($options, $request->query->all());
 
         $options = array_filter($options);
 

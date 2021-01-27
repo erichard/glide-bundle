@@ -13,7 +13,7 @@
             <argument></argument>
         </service>
 
-        <service id="erichard_glide.glide_controller" class="Erichard\Bundle\GlideBundle\Controller\GlideController">
+        <service id="Erichard\Bundle\GlideBundle\Controller\GlideController" class="Erichard\Bundle\GlideBundle\Controller\GlideController" public="true">
             <argument type="service" id="erichard_glide.signature_checker"></argument>
             <argument type="service" id="erichard_glide.options_resolver"></argument>
             <argument type="service" id="erichard_glide.server_inventory"></argument>

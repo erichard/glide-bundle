@@ -17,7 +17,7 @@ class AcceptWebpResolver implements OptionResolverInterface
     {
         $request = $this->requestStack->getCurrentRequest();
 
-        if (!isset($options['fm']) && in_array('image/webp', $request->getAcceptableContentTypes())) {
+        if (in_array('image/webp', $request->getAcceptableContentTypes())) {
             $options['fm'] = 'webp';
         }
 

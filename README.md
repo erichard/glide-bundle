@@ -81,7 +81,7 @@ A twig extension is provided to generate images URL in your templates. The exten
 Get glide servers from container
 --------------------------------
 
-Servers are accessible publicly in the container. You can grab them  with their id `erichard_glide.<name>_server`.
+Servers are accessible publicly in the container. You can grab them with their id `erichard_glide.<name>_server`.
 
 With the exemple from above you can get the server like this.
 
