@@ -54,8 +54,8 @@ class GlideController
             throw new NotFoundHttpException('Source file was not found');
         }
 
-        if ($this->isWebPFormat($options)) {
-            $this->addVaryHeaderForWebP($response);
+        if ($this->isWebpFormat($options)) {
+            $this->setHeadersForWebp($response);
         }
 
         return $response;
@@ -65,7 +65,7 @@ class GlideController
     {
         $glideServer = $this->serverInventory->get($server);
 
-        $baseOptions = $glideServer->getAllParams();
+        $baseOptions = $glideServer->getAllParams([]);
 
         $options = $this
             ->optionResolver
@@ -84,12 +84,12 @@ class GlideController
         return $options;
     }
 
-    private function isWebPFormat(array $options): bool
+    private function isWebpFormat(array $options): bool
     {
         return isset($options['fm']) && 'webp' === $options['fm'];
     }
 
-    private function addVaryHeaderForWebP(Response $response): void
+    private function setHeadersForWebp(Response $response): void
     {
         $response->headers->set('Content-Type', 'image/webp');
         $response->setVary(['Accept']);
