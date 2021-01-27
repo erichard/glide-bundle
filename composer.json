@@ -2,6 +2,12 @@
     "name": "erichard/glide-bundle",
     "description": "Integrate league/glide in your Symfony app",
     "license": "MIT",
+    "authors": [
+        {
+            "name": "Erwan Richard",
+            "email": "erwan.richard@protonmail.com"
+        }
+    ],
     "autoload": {
         "psr-4": { "Erichard\\GlideBundle\\": "" }
     },
@@ -10,5 +16,7 @@
     },
     "suggest": {
         "oneup/flysystem-bundle": "A Flysystem integration for your Symfony projects"
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

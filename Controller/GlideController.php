@@ -1,57 +1,94 @@
 <?php
 
-namespace Erichard\GlideBundle\Controller;
+namespace Erichard\Bundle\GlideBundle\Controller;
 
-use Erichard\GlideBundle\ServerRepository;
+use Erichard\Bundle\GlideBundle\OptionResolver\OptionResolverInterface;
+use Erichard\Bundle\GlideBundle\ServerInventoryInterface;
+use Erichard\Bundle\GlideBundle\SignatureCheckerInterface;
 use League\Glide\Filesystem\FileNotFoundException;
-use League\Glide\Signatures\SignatureException;
-use League\Glide\Signatures\SignatureFactory;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class GlideController extends AbstractController
+class GlideController
 {
-    private $serverRepository;
+    /**
+     * @var array
+     */
+    const PARAMS = [
+        'or', 'flip', 'crop', 'w', 'h', 'fit', 'dpr', 'bri',
+        'con', 'gam', 'sharp', 'blur', 'pixel', 'filt',
+        'mark', 'markw', 'markh', 'markx', 'marky', 'markpad', 'markpos', 'markalpha',
+        'bg', 'border', 'q', 'fm', 'p',
+    ];
 
-    public function __construct(ServerRepository $serverRepository)
+    /** @var SignatureCheckerInterface */
+    private $signatureChecker;
+
+    /** @var OptionResolverInterface */
+    private $optionResolver;
+
+    /** @var ServerInventoryInterface */
+    private $serverInventory;
+
+    public function __construct(SignatureCheckerInterface $signatureChecker, OptionResolverInterface $optionResolver, ServerInventoryInterface $serverInventory)
     {
-        $this->serverRepository = $serverRepository;
+        $this->signatureChecker = $signatureChecker;
+        $this->optionResolver = $optionResolver;
+        $this->serverInventory = $serverInventory;
     }
 
-    /**
-     * @param string  $server
-     * @param string  $path
-     * @param string  $_format
-     *
-     * @return Response
-     */
-    public function resizeAction(Request $request, $server, $path, $_format)
+    public function resize(Request $request, string $server, string $path, string $_format): Response
     {
-        $serverId = "erichard_glide.${server}_server";
-
-        if (!$this->serverRepository->hasServer($serverId)) {
-            throw $this->createNotFoundException();
+        if (!$this->serverInventory->has($server) || !$this->signatureChecker->check($request)) {
+            throw new NotFoundHttpException('Invalid server or signature');
         }
 
-        $signatureKey = $this->getParameter('erichard_glide.sign_key');
+        $options = $this->getOptionsForServer($server, $request);
+        $glideServer = $this->serverInventory->get($server);
 
-        if (null !== $signatureKey) {
-            try {
-                SignatureFactory::create($signatureKey)
-                    ->validateRequest(urldecode($request->getPathInfo()), $request->query->all())
-                ;
-            } catch (SignatureException $e) {
-                throw $this->createNotFoundException();
+        try {
+            $response = $glideServer->getImageResponse("{$path}.{$_format}", $options);
+        } catch (FileNotFoundException $exception) {
+            throw new NotFoundHttpException('Source file was not found');
+        }
+
+        if ($this->isWebPFormat($options)) {
+            $this->addVaryHeaderForWebP($response);
+        }
+
+        return $response;
+    }
+
+    private function getOptionsForServer(string $server, Request $request): array
+    {
+        $glideServer = $this->serverInventory->get($server);
+
+        $baseOptions = $glideServer->getAllParams($request->query->all());
+
+        $options = $this
+            ->optionResolver
+            ->resolveOptions($baseOptions, $server);
+
+        $options = array_filter($options);
+
+        foreach ($options as $option => $value) {
+            if (!in_array($option, self::PARAMS)) {
+                unset($options[$option]);
             }
         }
 
-        $server = $this->serverRepository->getServer($serverId);
+        return $options;
+    }
 
-        try {
-            return $server->getImageResponse("{$path}.{$_format}", $request->query->all());
-        } catch (FileNotFoundException $exception) {
-            throw $this->createNotFoundException();
-        }
+    private function isWebPFormat(array $options): bool
+    {
+        return isset($options['fm']) && 'webp' === $options['fm'];
+    }
+
+    private function addVaryHeaderForWebP(Response $response): void
+    {
+        $response->headers->set('Content-Type', 'image/webp');
+        $response->setVary(['Accept']);
     }
 }

@@ -1,19 +1,20 @@
 <?php
 
-namespace Erichard\GlideBundle;
+namespace Erichard\Bundle\GlideBundle;
 
 use League\Glide\Urls\UrlBuilderFactory;
 
-class GlideUrlBuilder
+class GlideUrlBuilder implements GlideUrlBuilderInterface
 {
+    /** @var string */
     protected $signkey;
 
-    public function __construct($signkey)
+    public function __construct(string $signkey = null)
     {
         $this->signkey = $signkey;
     }
 
-    public function buildUrl($server, $path, array $params = [])
+    public function buildUrl(string $server, string $path, array $params = []): string
     {
         $urlBuilder = UrlBuilderFactory::create("/$server/", $this->signkey);
 

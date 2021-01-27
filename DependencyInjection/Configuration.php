@@ -1,6 +1,6 @@
 <?php
 
-namespace Erichard\GlideBundle\DependencyInjection;
+namespace Erichard\Bundle\GlideBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -17,18 +17,20 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder('erichard_glide', 'array');
-        
-        if (method_exists($treeBuilder, 'getRootNode')) {
-            $rootNode = $treeBuilder->getRootNode();
+        if (!\method_exists(TreeBuilder::class, 'getRootNode')) {
+            $treeBuilder = new TreeBuilder();
+            $rootNode = $treeBuilder->root('erichard_glide');
         } else {
-            // BC layer for symfony/config 4.1 and older
-            $rootNode = $treeBuilder->root('erichard_glide', 'array');
+            $treeBuilder = new TreeBuilder('erichard_glide');
+            $rootNode = $treeBuilder->getRootNode();
         }
-        
+
         $rootNode
             ->children()
-                ->scalarNode('sign_key')->defaultValue(null)->end()
+                ->scalarNode('sign_key')
+                    ->defaultValue(null)
+                    ->cannotBeEmpty()
+                ->end()
                 ->arrayNode('presets')
                     ->useAttributeAsKey('name')
                     ->prototype('array')
@@ -71,6 +73,12 @@ class Configuration implements ConfigurationInterface
                             ->integerNode('max_image_size')->defaultNull()->end()
                             ->variableNode('defaults')->defaultValue([])->end()
                         ->end()
+                    ->end()
+                ->end()
+                ->arrayNode('accept_webp')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->booleanNode('enabled')->defaultFalse()->end()
                     ->end()
                 ->end()
             ->end()

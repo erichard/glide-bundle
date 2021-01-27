@@ -1,0 +1,54 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="erichard_glide.url_builder" class="Erichard\Bundle\GlideBundle\GlideUrlBuilder" public="false">
+            <argument></argument>
+        </service>
+
+        <service id="erichard_glide.signature_checker" class="Erichard\Bundle\GlideBundle\SignatureChecker" public="false">
+            <argument></argument>
+        </service>
+
+        <service id="erichard_glide.glide_controller" class="Erichard\Bundle\GlideBundle\Controller\GlideController">
+            <argument type="service" id="erichard_glide.signature_checker"></argument>
+            <argument type="service" id="erichard_glide.options_resolver"></argument>
+            <argument type="service" id="erichard_glide.server_inventory"></argument>
+            <tag name="controller.service_arguments"></tag>
+        </service>
+
+        <service id="erichard_glide.server_inventory" class="Erichard\Bundle\GlideBundle\ServerInventory">
+        </service>
+
+        <service id="erichard_glide.twig_extension" class="Erichard\Bundle\GlideBundle\Twig\GlideExtension" public="false">
+            <argument type="service" id="erichard_glide.url_builder"></argument>
+            <tag name="twig.extension"></tag>
+        </service>
+
+        <service id="erichard_glide.symfony_response_factory" class="Erichard\Bundle\GlideBundle\SymfonyResponseFactory" public="false">
+        </service>
+
+        <service id="erichard_glide.server" class="League\Glide\Server" public="false" abstract="true">
+            <factory class="League\Glide\ServerFactory" method="create"/>
+            <argument></argument>
+        </service>
+
+        <service id="erichard_glide.options_resolver" class="Erichard\Bundle\GlideBundle\OptionResolver\CompositeOptionResolver" public="false">
+            <argument type="tagged" tag="erichard_glide.options_resolver"/>
+        </service>
+
+        <service id="erichard_glide.webp_resolver" class="Erichard\Bundle\GlideBundle\OptionResolver\AcceptWebpResolver" public="false">
+            <argument type="service" id="request_stack" />
+            <tag name="erichard_glide.options_resolver"></tag>
+        </service>
+
+        <service id="Erichard\Bundle\GlideBundle\GlideUrlBuilderInterface" alias="erichard_glide.url_builder">
+        </service>
+
+        <service id="Erichard\Bundle\GlideBundle\SignatureCheckerInterface" alias="erichard_glide.signature_checker">
+        </service>
+    </services>
+</container>

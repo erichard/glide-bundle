@@ -1,14 +1,15 @@
 <?php
 
-namespace Erichard\GlideBundle\Twig;
+namespace Erichard\Bundle\GlideBundle\Twig;
 
-use Erichard\GlideBundle\GlideUrlBuilder;
+use Erichard\Bundle\GlideBundle\GlideUrlBuilderInterface;
 
 class GlideExtension extends \Twig_Extension
 {
+    /** @var GlideUrlBuilderInterface */
     protected $glideUrlBuilder;
 
-    public function __construct(GlideUrlBuilder $glideUrlBuilder)
+    public function __construct(GlideUrlBuilderInterface $glideUrlBuilder)
     {
         $this->glideUrlBuilder = $glideUrlBuilder;
     }
