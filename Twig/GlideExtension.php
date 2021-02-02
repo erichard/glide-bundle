@@ -2,9 +2,11 @@
 
 namespace Erichard\Bundle\GlideBundle\Twig;
 
+use Twig\TwigFunction;
+use Twig\Extension\AbstractExtension;
 use Erichard\Bundle\GlideBundle\GlideUrlBuilderInterface;
 
-class GlideExtension extends \Twig_Extension
+class GlideExtension extends AbstractExtension
 {
     /** @var GlideUrlBuilderInterface */
     protected $glideUrlBuilder;
@@ -17,7 +19,7 @@ class GlideExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('glideUrl', [$this, 'glideUrl']),
+            new TwigFunction('glideUrl', [$this, 'glideUrl']),
         ];
     }
 
