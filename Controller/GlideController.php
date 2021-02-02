@@ -71,7 +71,7 @@ class GlideController
             ->optionResolver
             ->resolveOptions($baseOptions, $server);
 
-        array_merge($options, $request->query->all());
+        $options = array_merge($options, $request->query->all());
 
         $options = array_filter($options);
 
