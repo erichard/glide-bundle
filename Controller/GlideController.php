@@ -38,18 +38,17 @@ class GlideController
         $this->serverInventory = $serverInventory;
     }
 
-    public function resize(Request $request, string $server, string $path, string $_format): Response
+    public function resize(Request $request, string $server, string $path): Response
     {
         if (!$this->serverInventory->has($server) || !$this->signatureChecker->check($request)) {
             throw new NotFoundHttpException('Invalid server or signature');
         }
 
         $options = $this->getOptionsForServer($server, $request);
-
         $glideServer = $this->serverInventory->get($server);
 
         try {
-            $response = $glideServer->getImageResponse("{$path}.{$_format}", $options);
+            $response = $glideServer->getImageResponse($path, $options);
         } catch (FileNotFoundException $exception) {
             throw new NotFoundHttpException('Source file was not found');
         }
