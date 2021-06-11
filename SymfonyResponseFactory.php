@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Erichard\Bundle\GlideBundle;
 
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemReader;
 use League\Glide\Responses\ResponseFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -17,7 +19,7 @@ class SymfonyResponseFactory implements ResponseFactoryInterface
         $this->request = $request;
     }
 
-    public function create(FilesystemInterface $cache, $path)
+    public function create(FilesystemReader $cache, $path)
     {
         $stream = $cache->readStream($path);
 

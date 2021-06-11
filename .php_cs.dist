@@ -1,0 +1,22 @@
+<?php
+
+$finder = PhpCsFixer\Finder::create()
+    ->exclude('var')
+    ->in(__DIR__)
+;
+
+return PhpCsFixer\Config::create()
+    ->setUsingCache(false)
+    ->setRules([
+        '@Symfony' => true,
+        'array_syntax' => ['syntax' => 'short'],
+        'concat_space' => ['spacing' => 'one'],
+        'ordered_imports' => [
+            'imports_order' => [
+                'class', 'function', 'const',
+            ],
+            'sort_algorithm' => 'alpha',
+        ]
+    ])
+    ->setFinder($finder)
+;

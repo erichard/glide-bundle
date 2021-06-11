@@ -2,9 +2,9 @@
 
 namespace Erichard\Bundle\GlideBundle\Twig;
 
-use Twig\TwigFunction;
-use Twig\Extension\AbstractExtension;
 use Erichard\Bundle\GlideBundle\GlideUrlBuilderInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
 class GlideExtension extends AbstractExtension
 {
