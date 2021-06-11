@@ -6,6 +6,7 @@ namespace Erichard\Bundle\GlideBundle;
 
 use League\Flysystem\FilesystemReader;
 use League\Glide\Responses\ResponseFactoryInterface;
+use League\MimeTypeDetection\FinfoMimeTypeDetector;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -24,15 +25,18 @@ class SymfonyResponseFactory implements ResponseFactoryInterface
         $stream = $cache->readStream($path);
 
         $response = new StreamedResponse();
-        $response->headers->set('Content-Type', $cache->getMimetype($path));
-        $response->headers->set('Content-Length', $cache->getSize($path));
+
+        $detector = new FinfoMimeTypeDetector();
+
+        $response->headers->set('Content-Type', $cache->detectMimeTypeFromFile($path));
+        $response->headers->set('Content-Length', $cache->fileSize($path));
         $response->setPublic();
         $response->setMaxAge(31536000);
         $response->setSharedMaxAge(31536000);
         $response->setExpires(date_create()->modify('+1 years'));
 
         if ($this->request) {
-            $response->setLastModified(date_create()->setTimestamp($cache->getTimestamp($path)));
+            $response->setLastModified(date_create()->setTimestamp($cache->lastModified($path)));
             $response->isNotModified($this->request);
         }
 
