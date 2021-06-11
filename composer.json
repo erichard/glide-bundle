@@ -12,7 +12,7 @@
         "psr-4": { "Erichard\\Bundle\\GlideBundle\\": "" }
     },
     "require": {
-        "league/glide": "^1.0"
+        "league/glide": "^2.0"
     },
     "suggest": {
         "oneup/flysystem-bundle": "A Flysystem integration for your Symfony projects"
