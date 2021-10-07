@@ -37,6 +37,8 @@ erichard_glide:
         product_showcase: # glide options
             w: 540
             h: 540
+    accept_webp:
+        enabled: true # Auto convert to WebP if the browser support it (false by default)
     servers:
         image:
             source: oneup_flysystem.image_filesystem # A flystem service
