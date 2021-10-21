@@ -49,6 +49,10 @@ class GlideController
         $options = $this->getOptionsForServer($server, $request);
         $glideServer = $this->serverInventory->get($server);
 
+        if ($request->isNoCache()) {
+            $glideServer->deleteCache($path);
+        }
+
         try {
             $response = $glideServer->getImageResponse($path, $options);
         } catch (FileNotFoundException $exception) {
