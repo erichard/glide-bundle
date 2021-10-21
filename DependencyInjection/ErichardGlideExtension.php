@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Erichard\Bundle\GlideBundle\DependencyInjection;
 
 use Erichard\Bundle\GlideBundle\OptionResolver\OptionResolverInterface;
@@ -25,7 +27,7 @@ class ErichardGlideExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
 
         $container
@@ -39,16 +41,24 @@ class ErichardGlideExtension extends Extension
         $container->setParameter('erichard_glide.sign_key', $config['sign_key']);
 
         foreach ($config['servers'] as $name => $server) {
-            $this->createServer($name, $server['source'], $server['cache'], $container, $server['defaults'], $config['presets'], $server['max_image_size']);
+            $this->createServer($name, $server['source'], $server['cache'], $container, $server['defaults'], $config['presets'], $server['max_image_size'], $server['driver']);
         }
 
         $container
             ->registerForAutoconfiguration(OptionResolverInterface::class)
             ->addTag('erichard_glide.options_resolver')
         ;
+
+        if (!$config['accept_webp']['enabled']) {
+            $container->removeDefinition('erichard_glide.webp_resolver');
+        }
+
+        if (!$config['accept_avif']['enabled']) {
+            $container->removeDefinition('erichard_glide.avif_resolver');
+        }
     }
 
-    private function createServer($name, $source, $cache, ContainerBuilder $container, array $defaults = [], array $presets = [], $maxImageSize = null)
+    private function createServer($name, $source, $cache, ContainerBuilder $container, array $defaults = [], array $presets = [], $maxImageSize = null, string $driver = null)
     {
         $id = sprintf('erichard_glide.%s_server', $name);
 
@@ -60,6 +70,7 @@ class ErichardGlideExtension extends Extension
                 'response' => new Reference('erichard_glide.symfony_response_factory'),
                 'defaults' => $defaults,
                 'presets' => $presets,
+                'driver' => $driver,
                 'max_image_size' => $maxImageSize,
            ])
             ->setPublic(true)

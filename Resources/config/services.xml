@@ -45,6 +45,11 @@
             <tag name="erichard_glide.options_resolver"></tag>
         </service>
 
+        <service id="erichard_glide.avif_resolver" class="Erichard\Bundle\GlideBundle\OptionResolver\AcceptAvifResolver" public="false">
+            <argument type="service" id="request_stack" />
+            <tag name="erichard_glide.options_resolver"></tag>
+        </service>
+
         <service id="Erichard\Bundle\GlideBundle\GlideUrlBuilderInterface" alias="erichard_glide.url_builder">
         </service>
 

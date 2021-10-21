@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Erichard\Bundle\GlideBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -17,7 +19,7 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        if (!\method_exists(TreeBuilder::class, 'getRootNode')) {
+        if (!method_exists(TreeBuilder::class, 'getRootNode')) {
             $treeBuilder = new TreeBuilder();
             $rootNode = $treeBuilder->root('erichard_glide');
         } else {
@@ -70,12 +72,19 @@ class Configuration implements ConfigurationInterface
                         ->children()
                             ->scalarNode('source')->isRequired()->end()
                             ->scalarNode('cache')->isRequired()->end()
+                            ->scalarNode('driver')->defaultNull()->end()
                             ->integerNode('max_image_size')->defaultNull()->end()
                             ->variableNode('defaults')->defaultValue([])->end()
                         ->end()
                     ->end()
                 ->end()
                 ->arrayNode('accept_webp')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->booleanNode('enabled')->defaultFalse()->end()
+                    ->end()
+                ->end()
+                ->arrayNode('accept_avif')
                     ->addDefaultsIfNotSet()
                     ->children()
                         ->booleanNode('enabled')->defaultFalse()->end()

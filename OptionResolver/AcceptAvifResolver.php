@@ -6,7 +6,7 @@ namespace Erichard\Bundle\GlideBundle\OptionResolver;
 
 use Symfony\Component\HttpFoundation\RequestStack;
 
-class AcceptWebpResolver implements OptionResolverInterface
+class AcceptAvifResolver implements OptionResolverInterface
 {
     private $requestStack;
 
@@ -19,8 +19,8 @@ class AcceptWebpResolver implements OptionResolverInterface
     {
         $request = $this->requestStack->getCurrentRequest();
 
-        if (\in_array('image/webp', $request->getAcceptableContentTypes())) {
-            $options['fm'] = 'webp';
+        if (\in_array('image/avif', $request->getAcceptableContentTypes())) {
+            $options['fm'] = 'avif';
         }
 
         return $options;

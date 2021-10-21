@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Erichard\Bundle\GlideBundle\Controller;
 
 use Erichard\Bundle\GlideBundle\OptionResolver\OptionResolverInterface;
@@ -15,7 +17,7 @@ class GlideController
     /**
      * @var array
      */
-    const PARAMS = [
+    public const PARAMS = [
         'or', 'flip', 'crop', 'w', 'h', 'fit', 'dpr', 'bri',
         'con', 'gam', 'sharp', 'blur', 'pixel', 'filt',
         'mark', 'markw', 'markh', 'markx', 'marky', 'markpad', 'markpos', 'markalpha',
@@ -57,6 +59,10 @@ class GlideController
             $this->setHeadersForWebp($response);
         }
 
+        if ($this->isAvifFormat($options)) {
+            $this->setHeadersForAvif($response);
+        }
+
         return $response;
     }
 
@@ -75,7 +81,7 @@ class GlideController
         $options = array_filter($options);
 
         foreach ($options as $option => $value) {
-            if (!in_array($option, self::PARAMS)) {
+            if (!\in_array($option, self::PARAMS)) {
                 unset($options[$option]);
             }
         }
@@ -91,6 +97,17 @@ class GlideController
     private function setHeadersForWebp(Response $response): void
     {
         $response->headers->set('Content-Type', 'image/webp');
+        $response->setVary(['Accept']);
+    }
+
+    private function isAvifFormat(array $options): bool
+    {
+        return isset($options['fm']) && 'avif' === $options['fm'];
+    }
+
+    private function setHeadersForAvif(Response $response): void
+    {
+        $response->headers->set('Content-Type', 'image/avif');
         $response->setVary(['Accept']);
     }
 }
