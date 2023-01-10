@@ -26,7 +26,7 @@ class SymfonyResponseFactory implements ResponseFactoryInterface
         $response = new StreamedResponse();
 
         $response->headers->set('Content-Type', $cache->mimeType($path));
-        $response->headers->set('Content-Length', $cache->fileSize($path));
+        $response->headers->set('Content-Length', (string) $cache->fileSize($path));
         $response->setPublic();
         $response->setMaxAge(31536000);
         $response->setSharedMaxAge(31536000);
